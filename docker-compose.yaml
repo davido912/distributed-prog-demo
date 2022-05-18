@@ -1,0 +1,27 @@
+services:
+  registry:
+    build:
+      context: .
+      dockerfile: Dockerfile.registry
+  log:
+    depends_on:
+      - "registry"
+    build: .
+  grading:
+    depends_on:
+      - "registry"
+      - "log"
+    build:
+      context: .
+      dockerfile: Dockerfile.grading
+
+  teacherportal:
+    depends_on:
+      - "registry"
+      - "log"
+      - "grading"
+    build:
+      context: .
+      dockerfile: Dockerfile.teacherportal
+    ports:
+      - "8080:5000"

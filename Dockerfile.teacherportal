@@ -1,0 +1,14 @@
+FROM golang:1.18.2-alpine3.15 AS pre
+
+COPY . /go/project
+
+WORKDIR /go/project
+
+RUN go build ./cmd/teacherportal
+
+FROM alpine:latest
+
+COPY --from=pre /go/project/teacherportal .
+COPY --from=pre /go/project/app/teacherportal .
+
+CMD ["./teacherportal"]
